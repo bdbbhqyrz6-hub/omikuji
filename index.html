@@ -27,10 +27,14 @@
     margin-bottom: 1rem;
   }
 
+  /* ★ 操作性改善済みの画像スタイル */
   #omikuji-img {
-    max-width: 100%;
+    width: 80%;
+    max-width: 280px;
     height: auto;
-    touch-action: manipulation; /* スマホ最適化 */
+    margin: 1.5rem auto;
+    display: block;
+    touch-action: manipulation;
     cursor: pointer;
   }
 </style>
@@ -85,7 +89,7 @@ function tap(e) {
   running ? stop() : start();
 }
 
-// 👇 画像だけにイベントを設定
+/* 画像だけにイベントを設定 */
 imgEl.addEventListener("click", tap);
 imgEl.addEventListener("touchstart", tap, { passive:false });
 </script>
