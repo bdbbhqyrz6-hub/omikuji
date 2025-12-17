@@ -6,14 +6,13 @@
 <title>おみくじ</title>
 
 <style>
+  /* ページ全体 */
   body {
     margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top:1rem;
+    padding: 1.5rem 1rem;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: sans-serif;
   }
 
   h1 {
@@ -25,12 +24,13 @@
   }
 
   #omikuji-text {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
   }
 
+  /* 画像は画面幅に合わせて縮小 */
   #omikuji-img {
-    width: 200px;
+    max-width: 100%;
     height: auto;
   }
 </style>
@@ -40,8 +40,8 @@
 
 <h1>おみくじ</h1>
 <p>
-画像をタップすることで<br>
-本日の運勢を占えます
+画像をタップすると<br>
+本日の運勢が決まります
 </p>
 
 <div id="omikuji-text">---</div>
@@ -56,49 +56,41 @@ const items = [
   { text: "凶",   img: "documents/images/kyou.png" }
 ];
 
+let timer = null;
+let running = false;
+
 const textEl = document.getElementById("omikuji-text");
 const imgEl  = document.getElementById("omikuji-img");
 
-let timer = null;
-let isRunning = false;
-
-// ランダム表示開始
-function startRoulette() {
-  isRunning = true;
-
+function start() {
+  running = true;
   timer = setInterval(() => {
-    // 回転中は完全ランダムでOK
-    const textItem = items[Math.floor(Math.random() * items.length)];
-    const imgItem  = items[Math.floor(Math.random() * items.length)];
-
-    textEl.textContent = textItem.text;
-    imgEl.src = imgItem.img;
+    const a = items[Math.floor(Math.random() * items.length)];
+    const b = items[Math.floor(Math.random() * items.length)];
+    textEl.textContent = a.text;
+    imgEl.src = b.img;
   }, 100);
 }
 
-// 停止（結果を揃える）
-function stopRoulette() {
+function stop() {
   clearInterval(timer);
-  isRunning = false;
-
-  // 停止時に1回だけ同じ結果を選ぶ
-  const result = items[Math.floor(Math.random() * items.length)];
-  textEl.textContent = result.text;
-  imgEl.src = result.img;
+  running = false;
+  const r = items[Math.floor(Math.random() * items.length)];
+  textEl.textContent = r.text;
+  imgEl.src = r.img;
 }
 
-// クリック / タップ制御
-function handleTap(e) {
+function tap(e) {
   e.preventDefault();
-  isRunning ? stopRoulette() : startRoulette();
+  running ? stop() : start();
 }
 
-document.addEventListener("click", handleTap);
-document.addEventListener("touchstart", handleTap, { passive: false });
+document.addEventListener("click", tap);
+document.addEventListener("touchstart", tap, { passive:false });
 
-// ページ読み込み時に自動スタート
-startRoulette();
+start();
 </script>
 
 </body>
+</html>
 </html>
