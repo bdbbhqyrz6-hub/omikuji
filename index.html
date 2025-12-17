@@ -6,7 +6,6 @@
 <title>おみくじ</title>
 
 <style>
-  /* ページ全体 */
   body {
     margin: 0;
     padding: 1.5rem 1rem;
@@ -28,10 +27,11 @@
     margin-bottom: 1rem;
   }
 
-  /* 画像は画面幅に合わせて縮小 */
   #omikuji-img {
     max-width: 100%;
     height: auto;
+    touch-action: manipulation; /* スマホ最適化 */
+    cursor: pointer;
   }
 </style>
 </head>
@@ -85,12 +85,10 @@ function tap(e) {
   running ? stop() : start();
 }
 
-document.addEventListener("click", tap);
-document.addEventListener("touchstart", tap, { passive:false });
-
-start();
+// 👇 画像だけにイベントを設定
+imgEl.addEventListener("click", tap);
+imgEl.addEventListener("touchstart", tap, { passive:false });
 </script>
 
 </body>
-</html>
 </html>
